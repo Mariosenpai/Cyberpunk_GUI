@@ -1,9 +1,9 @@
 import streamlit as st
-
+import pickle
 import classe_npc
 
 
-def criacao_npc(lista_npcs, valor_de_subtracao, dado_de_dano, dado_de_mult, confiabilidade_armar):
+def criacao_npc( valor_de_subtracao, dado_de_dano, dado_de_mult, confiabilidade_armar):
     side = st.sidebar
 
     # Criar um novo npc
@@ -16,6 +16,7 @@ def criacao_npc(lista_npcs, valor_de_subtracao, dado_de_dano, dado_de_mult, conf
     confiabilidade_selecionada = criar_npc.selectbox("Selecione a confiabilidade da armar", confiabilidade_armar)
 
     if criar_npc.button("Salva"):
+        print("Entrou no botao")
 
         if 3 < len(dado_dano) <= 5:
             valor_de_subtracao = int(dado_dano[4])
@@ -26,7 +27,12 @@ def criacao_npc(lista_npcs, valor_de_subtracao, dado_de_dano, dado_de_mult, conf
             dado_de_mult = int(dado_dano[0])
 
         npc = classe_npc.npc(nome, REF, pericia_armar, valor_de_subtracao, dado_de_dano, dado_de_mult,
-                             confiabilidade_selecionada)
+                             confiabilidade_selecionada,dado_dano)
         st.text(npc.nome)
-        return lista_npcs.append(npc)
+
+        #salva npc em um arquivo
+        with open(f'dados/NPC_{npc.nome}.pickle', 'wb') as arquivo:
+            pickle.dump(npc, arquivo)
+        arquivo.close()
+
     # Criar um novo npc

@@ -1,5 +1,5 @@
 class npc:
-    def __init__(self, nome, REF, pericia_arma, valor_de_subtracao, dado_de_dano, dado_de_mult, confiabilidade):
+    def __init__(self, nome, REF, pericia_arma, valor_de_subtracao, dado_de_dano, dado_de_mult, confiabilidade, dado_full):
         self.nome = nome
         self.REF = REF
         self.pericia_arma = pericia_arma
@@ -7,3 +7,4 @@ class npc:
         self.dado_de_dano = dado_de_dano
         self.dado_de_mult = dado_de_mult
         self.confiabilidade = confiabilidade
+        self.dado_full = dado_full
