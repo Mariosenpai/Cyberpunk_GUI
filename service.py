@@ -1,6 +1,7 @@
 from random import randint as random
 from math import ceil
 import os
+import streamlit as st
 
 
 def pegaDificuldade(dificuldade):
@@ -52,15 +53,15 @@ def acertoResultadoLocalEspecifico(acertos, localTiroDic, local):
     print(localTiroDic)
 
 
-def calcula_dano():
+def calcula_dano(npc):
     dano = 0
-    for i in range(dado_de_mult):
-        dano += random(1, dado_de_dano)
+    for i in range(npc.dado_de_mult):
+        dano += random(1, npc.dado_de_dano)
 
-    if (dano - valor_de_subtracao) <= 0:
+    if (dano - npc.valor_de_subtracao) <= 0:
         return 1
     else:
-        return dano - valor_de_subtracao
+        return dano - npc.valor_de_subtracao
 
 
 def adiciona_dano_ao_local(localTiroDic, local):
@@ -85,100 +86,69 @@ def resultado_tiros_acertados(acertos, localTiroDic, boleano_local_especifico=Fa
         acertoResultadoLocalEspecifico(acertos, localTiroDic, local)
 
 
-def armar_falhou():
+def armar_falhou(confiabilidade):
+    confiabilidade_armar = ["Não é uma arma automatica", "Pouco confiavel", "Padrão", "Muito confiavel"]
+
     evitar_falha = random(1, 10)
-    if confiabilidade == 1:
+    if confiabilidade == confiabilidade_armar[1]:
         if evitar_falha <= 8:
             print("Armar falhou")
             return True
-    if confiabilidade == 2:
+    if confiabilidade == confiabilidade_armar[2]:
         if evitar_falha <= 5:
             print("Armar falhou")
             return True
-    if confiabilidade <= 3:
+    if confiabilidade <= confiabilidade_armar[3]:
         print("Armar falhou")
         return True
 
 
-def tipos_falha_criticas():
+def tipos_falha_criticas(npc):
     tipo_falha_critica = random(1, 10)
 
     if tipo_falha_critica <= 4:
-        print("Nada acontece...")
+        st.text("Nada acontece...")
         return False
     elif tipo_falha_critica == 5:
-        print("Voce deixa sua arma cair")
+        st.text("Voce deixa sua arma cair")
         return True
     elif tipo_falha_critica == 6:
-        print("Atinge algo inofencivo sem ser o alvo")
+        st.text("Atinge algo inofencivo sem ser o alvo")
         return True
     elif tipo_falha_critica == 7:
-        print("Arma trava")
+        st.text("Arma trava")
         return True
     elif tipo_falha_critica == 8:
-        print("Voce se atira na/o", localCorpo())
-        print(f"Levou {calcula_dano()} de dano no local")
+        st.text(f"Voce se atira na/o {localCorpo()}")
+        st.text(f"Levou {calcula_dano(npc)} de dano no local")
         return True
     elif tipo_falha_critica >= 9:
-        print("Voce atinge um membro do grupo")
-        print("Todo o dano a parte de agora em diante será direicionado para um membro de o grupo")
+        st.text("Voce atinge um membro do grupo")
+        st.text("Todo o dano a parte de agora em diante será direicionado para um membro de o grupo")
         return False
 
 
-def rolagem_dados_criticos():
-    resultado_dado = random(1, 10)
+def rolagem_dados_criticos(npc, automatica):
+    resultado_dado = random(1,10)
     falha = False
-    print("\n******************************")
-    print("* Resultado do dado =", resultado_dado, "     *")
-    print("******************************\n")
+    st.text(f"Resultado do dado = {resultado_dado}")
     if resultado_dado == 10:
-        print("******************************")
-        print("ACERTO CRITICO!! \nrolagem de dado adicional")
+        st.text("ACERTO CRITICO!! \nrolagem de dado adicional")
         nova_rolagem = random(1, 10)
-        print("Resultado da nova rolagem =", nova_rolagem)
+        st.text(f"Resultado da nova rolagem = {nova_rolagem}")
         resultado_dado += nova_rolagem
-        print("Resultado final do dado =", resultado_dado)
-        print("******************************")
+        st.text(f"Resultado final do dado = {resultado_dado}")
     elif resultado_dado == 1:
-        print("******************************")
-        print("FALHA CRITICA!!")
-        if arma_automatica == 1:
-            falha = armar_falhou()
-        elif arma_automatica == 2:
-            falha = tipos_falha_criticas()
-        print("******************************")
+        st.text("FALHA CRITICA!!")
+        if automatica:
+            falha = armar_falhou(npc.confiabilidade)
+        else:
+            falha = tipos_falha_criticas(npc)
+
 
     return resultado_dado, falha
 
 
-def mira_buff_debuff():
-    boleano_local_especifico = False
-    debuff_local_especifico = 0
-    buff_mira = 0
-    local = ''
-
-    if mira == 1:
-        print("Voce mirou em um local especifico?")
-        local_especifico = int(input("Sim (1) ou Nao (2) :"))
-
-        if local_especifico == 1:
-            debuff_local_especifico = 4
-            print("Qual foi o local que voce mirou ?")
-            print(
-                "1 - cabeca\n2 - torso\n3 - braco direita\n4 - braco esquerdo\n5 - perna direita \n6 - perna esquerda")
-            local_mirado = int(input("Escolha:"))
-            local = escolhe_local(local_mirado)
-            boleano_local_especifico = True
-
-        elif local_especifico == 2:
-            turnos_mirando = int(input("Esta mirando por turnos tempo:"))
-
-            if turnos_mirando <= 3:
-                buff_mira = turnos_mirando
-            else:
-                buff_mira = 3
-
-    return buff_mira, debuff_local_especifico, boleano_local_especifico, local
 
 
 def pegaCaminhoArquivos(pasta_principal):

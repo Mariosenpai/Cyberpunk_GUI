@@ -1,32 +1,27 @@
 import streamlit as st
 import pickle
-from service import pegaCaminhoArquivos
 from GUI.side_bar import *
+from GUI.st_main import *
+from service import *
 
 # Variaveis
 valor_de_subtracao = 0
 dado_de_dano = 0
 dado_de_mult = 0
-confiabilidade_armar = ["Não é uma arma automatica", "Pouco confiavel", "Padrão", "Muito confiavel"]
-npc_escolhido = ''
+buff_mira = 0
+debuff_mira = 0
 
-criacao_npc(valor_de_subtracao, dado_de_dano, dado_de_mult, confiabilidade_armar)
+confiabilidade_armar = ["Não é uma arma automatica", "Pouco confiavel", "Padrão", "Muito confiavel"]
+dificudades = ["Queima roupa - 10", "Curta distancia - 15",
+               "Media distancia - 20", "longa distancia - 25", "Exterma distancia - 30"]
+local_corpo = ["Cabeça", "Torso", "Braço direito", "Braço esquerdo", "Perna direita", "Perna esquerda"]
 
 st.title("Cyberpunk")
 
-lista_npcs = []
-caminho_dic = pegaCaminhoArquivos("dados")
-for npc_salvo in caminho_dic:
-    with open(f"dados/{npc_salvo}", 'rb') as arquivo_aberto:
-        lista_npcs.append(pickle.load(arquivo_aberto))
+# SIDEBAR
+criacao_npc(valor_de_subtracao, dado_de_dano, dado_de_mult, confiabilidade_armar)
+npc = buscar_npc()
+
+quantidades_tiros, dificudade, local, resultado = selecione_informacoes(npc,local_corpo,dificudades)
 
 
-npc_escolhido = st.sidebar.selectbox("Busca npcs salvos", lista_npcs)
-
-st.text(f"Nome: {npc_escolhido.nome}\n"
-        f"Reflexo(REF): {npc_escolhido.REF}\n"
-        f"Pericia com a arma: {npc_escolhido.pericia_arma}\n"
-        f"Dado de dano da arma: {npc_escolhido.dado_full}\n"
-        f"Automatica: {npc_escolhido.confiabilidade}")
-
-st.button("Usar esse npc")
