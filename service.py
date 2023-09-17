@@ -4,6 +4,9 @@ import os
 import streamlit as st
 
 
+def locais_corpo():
+    return ["Cabeça", "Torso", "Braço direito", "Braço esquerdo", "Perna direita", "Perna esquerda"]
+
 def pegaDificuldade(dificuldade):
     if dificuldade == 1:
         return 10
@@ -17,40 +20,40 @@ def pegaDificuldade(dificuldade):
         return 30
 
 
-def localCorpo():
+def local_corpo_aleatorio():
     local = random(1, 10)
 
     if local == 1:
-        return 'cabeca'
+        return locais_corpo()[0]
     elif local in [2, 3, 4]:
-        return 'torso'
+        return locais_corpo()[1]
     elif local == 5:
-        return 'braco direito'
+        return locais_corpo()[2]
     elif local == 6:
-        return 'braco esquerdo'
+        return locais_corpo()[3]
     elif local in [7, 8]:
-        return 'perna direita'
+        return locais_corpo()[4]
     else:
-        return 'perna esquerda'
+        return locais_corpo()[5]
 
 
-def acertoResultado(acertos, localTiroDic):
+def acertoResultado(npc, acertos, localTiroDic):
     for i in range(1, acertos + 1):
         # O local é aleatorio quando voce não especifica o mesmo
-        local = localCorpo()
-        localTiroDic = adiciona_dano_ao_local(localTiroDic, local)
+        local = local_corpo_aleatorio()
+        localTiroDic = adiciona_dano_ao_local(npc,localTiroDic, local)
     # Qualquer dano na cabeca é dobrado
-    localTiroDic['cabeca'] *= 2
-    print(localTiroDic)
+    localTiroDic['Cabeça'] *= 2
+    return localTiroDic
 
 
-def acertoResultadoLocalEspecifico(acertos, localTiroDic, local):
+def acertoResultadoLocalEspecifico(npc, acertos, localTiroDic, local):
     for i in range(1, acertos + 1):
-        localTiroDic = adiciona_dano_ao_local(localTiroDic, local)
+        localTiroDic = adiciona_dano_ao_local(npc, localTiroDic, local)
 
     # Qualquer dano na cabeca é dobrado
-    localTiroDic['cabeca'] *= 2
-    print(localTiroDic)
+    localTiroDic['Cabeça'] *= 2
+    return localTiroDic
 
 
 def calcula_dano(npc):
@@ -64,8 +67,8 @@ def calcula_dano(npc):
         return dano - npc.valor_de_subtracao
 
 
-def adiciona_dano_ao_local(localTiroDic, local):
-    dano = calcula_dano()
+def adiciona_dano_ao_local(npc, localTiroDic, local):
+    dano = calcula_dano(npc)
     if local in localTiroDic:
         localTiroDic[local] += dano
     else:
@@ -74,16 +77,16 @@ def adiciona_dano_ao_local(localTiroDic, local):
 
 
 def escolhe_local(id_local):
-    local = ['cabeca', 'torso', 'braco direito', 'braco esquerdo', 'perna direita', 'perna esquerda']
+    local = local_corpo_aleatorio()
 
     return local[id_local - 1]
 
 
-def resultado_tiros_acertados(acertos, localTiroDic, boleano_local_especifico=False, local=''):
+def resultado_tiros_acertados(npc, acertos, localTiroDic, boleano_local_especifico=False, local=''):
     if not boleano_local_especifico:
-        acertoResultado(acertos, localTiroDic)
+        return acertoResultado(npc, acertos, localTiroDic)
     else:
-        acertoResultadoLocalEspecifico(acertos, localTiroDic, local)
+        return acertoResultadoLocalEspecifico(npc, acertos, localTiroDic, local)
 
 
 def armar_falhou(confiabilidade):
@@ -92,14 +95,11 @@ def armar_falhou(confiabilidade):
     evitar_falha = random(1, 10)
     if confiabilidade == confiabilidade_armar[1]:
         if evitar_falha <= 8:
-            print("Armar falhou")
             return True
     if confiabilidade == confiabilidade_armar[2]:
         if evitar_falha <= 5:
-            print("Armar falhou")
             return True
     if confiabilidade <= confiabilidade_armar[3]:
-        print("Armar falhou")
         return True
 
 
@@ -119,7 +119,7 @@ def tipos_falha_criticas(npc):
         st.text("Arma trava")
         return True
     elif tipo_falha_critica == 8:
-        st.text(f"Voce se atira na/o {localCorpo()}")
+        st.text(f"Voce se atira na/o {local_corpo_aleatorio()}")
         st.text(f"Levou {calcula_dano(npc)} de dano no local")
         return True
     elif tipo_falha_critica >= 9:
@@ -131,7 +131,8 @@ def tipos_falha_criticas(npc):
 def rolagem_dados_criticos(npc, automatica):
     resultado_dado = random(1,10)
     falha = False
-    st.text(f"Resultado do dado = {resultado_dado}")
+
+    st.text(f"log:\nResultado do dado = {resultado_dado}")
     if resultado_dado == 10:
         st.text("ACERTO CRITICO!! \nrolagem de dado adicional")
         nova_rolagem = random(1, 10)

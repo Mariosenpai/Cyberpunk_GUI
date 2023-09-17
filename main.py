@@ -12,16 +12,13 @@ buff_mira = 0
 debuff_mira = 0
 
 confiabilidade_armar = ["Não é uma arma automatica", "Pouco confiavel", "Padrão", "Muito confiavel"]
-dificudades = ["Queima roupa - 10", "Curta distancia - 15",
-               "Media distancia - 20", "longa distancia - 25", "Exterma distancia - 30"]
-local_corpo = ["Cabeça", "Torso", "Braço direito", "Braço esquerdo", "Perna direita", "Perna esquerda"]
+dificudades = {"Queima roupa - 10": 10, "Curta distancia - 15": 15,
+               "Media distancia - 20": 20, "longa distancia - 25": 25, "Exterma distancia - 30": 30}
+local_corpo = locais_corpo()
 
 st.title("Cyberpunk")
 
 # SIDEBAR
 criacao_npc(valor_de_subtracao, dado_de_dano, dado_de_mult, confiabilidade_armar)
 npc = buscar_npc()
-
-quantidades_tiros, dificudade, local, resultado = selecione_informacoes(npc,local_corpo,dificudades)
-
-
+sistemas(npc, local_corpo, dificudades)
