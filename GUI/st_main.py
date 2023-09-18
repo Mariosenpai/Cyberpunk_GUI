@@ -1,4 +1,5 @@
 import streamlit as st
+from math import ceil
 from service import *
 
 
@@ -45,9 +46,7 @@ def sistemas(npc, local_corpo, dificuldades):
 # Botao para rola os dados
 def botao_rolar_dados(sist_causar_dano, npc, dificuldades, dificuldade, quantidade_tiros, local, buff_mira,
                       debuff_mira):
-
     confiabilidade_armar = False
-
 
     if sist_causar_dano.button("Rolar dados"):
 
@@ -58,7 +57,7 @@ def botao_rolar_dados(sist_causar_dano, npc, dificuldades, dificuldade, quantida
         if npc.confiabilidade != "Não é uma arma automatica":
             confiabilidade_armar = True
 
-        resultado_final, resultado  = rolagem_dado_causar_dano(npc,confiabilidade_armar, buff_mira,debuff_mira)
+        resultado_final, resultado = rolagem_dado_causar_dano(npc, confiabilidade_armar, buff_mira, debuff_mira)
 
         valor_dificuldade = dificuldades[dificuldade]
 
@@ -81,9 +80,10 @@ def metricas_sistema_receber_dano(sist_causar_dano, localTiroDic, resultado, res
         col.metric(lc, localTiroDic[lc])
 
 
-def rolagem_dado_causar_dano(npc,confiabilidade_armar, buff_mira,debuff_mira):
+def rolagem_dado_causar_dano(npc, confiabilidade_armar, buff_mira, debuff_mira):
     resultado, falha = rolagem_dados_criticos(npc, confiabilidade_armar)
-    return resultado + int(npc.REF) + int(npc.pericia_arma) + buff_mira - debuff_mira , resultado
+    return resultado + int(npc.REF) + int(npc.pericia_arma) + buff_mira - debuff_mira, resultado
+
 
 def sistema_tiros(npc, quantidade_tiros, resultado, resultado_final, sist_causar_dano, valor_dificuldade,
                   localTiroDic, local):
@@ -103,18 +103,18 @@ def sistema_tiros(npc, quantidade_tiros, resultado, resultado_final, sist_causar
             sist_causar_dano.error("Voce errou")
 
     elif quantidade_tiros == 3:
-        resultado_final = resultado + 3
+        resultado_final += resultado + 3
         if resultado_final >= valor_dificuldade:
             sist_causar_dano.success("Voce acertou!!")
-            acertos = 3
-            localTiroDic = resultado_tiros_acertados(npc, 3, localTiroDic, boleano_local_especifico, local)
+            acertos = ceil(random(1, 6) / 2)
+            localTiroDic = resultado_tiros_acertados(npc, acertos, localTiroDic, boleano_local_especifico, local)
         else:
             sist_causar_dano.error("Voce errou")
 
     elif quantidade_tiros > 3:
         if resultado_final >= valor_dificuldade:
             sist_causar_dano.success("Voce acertou!!")
-            acertos = resultado - valor_dificuldade
+            acertos = resultado_final - valor_dificuldade
 
             if acertos > quantidade_tiros:
                 acertos = quantidade_tiros
