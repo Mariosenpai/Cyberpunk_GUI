@@ -42,9 +42,13 @@ def sistemas(npc, local_corpo, dificuldades):
     botao_rolar_dados(sist_causar_dano, npc, dificuldades, dificuldade, quantidade_tiros, local, buff_mira, debuff_mira)
 
 
+# Botao para rola os dados
 def botao_rolar_dados(sist_causar_dano, npc, dificuldades, dificuldade, quantidade_tiros, local, buff_mira,
                       debuff_mira):
+
     confiabilidade_armar = False
+
+
     if sist_causar_dano.button("Rolar dados"):
 
         # dicionario de todos os membros do corpo e seu dano causada a cada um deles
@@ -54,28 +58,35 @@ def botao_rolar_dados(sist_causar_dano, npc, dificuldades, dificuldade, quantida
         if npc.confiabilidade != "Não é uma arma automatica":
             confiabilidade_armar = True
 
-        resultado, falha = rolagem_dados_criticos(npc, confiabilidade_armar)
-        resultado_final = resultado + int(npc.REF) + int(npc.pericia_arma) + buff_mira - debuff_mira
+        resultado_final, resultado  = rolagem_dado_causar_dano(npc,confiabilidade_armar, buff_mira,debuff_mira)
 
         valor_dificuldade = dificuldades[dificuldade]
 
-        acertos, localTiroDic = tipos_tiros(npc, quantidade_tiros, resultado, resultado_final, sist_causar_dano,
-                                                 valor_dificuldade,
-                                                 localTiroDic, local)
-
-        col1, col2, col3 = sist_causar_dano.columns(3)
-        col1.metric("Resultado Dados", value=resultado)
-        col2.metric("Resultado Completo", value=resultado_final)
-        col3.metric("Tiros Acertados", value=acertos)
-
-        sist_causar_dano.write("Dano direciona as partes do corpo")
-        for i, col in enumerate(sist_causar_dano.columns(6)):
-            lc = locais_corpo()[i]
-            col.metric(lc, localTiroDic[lc])
+        acertos, localTiroDic = sistema_tiros(npc, quantidade_tiros, resultado, resultado_final, sist_causar_dano,
+                                              valor_dificuldade, localTiroDic, local)
+        metricas_sistema_receber_dano(sist_causar_dano, localTiroDic, resultado, resultado_final, acertos)
 
 
-def tipos_tiros(npc, quantidade_tiros, resultado, resultado_final, sist_causar_dano, valor_dificuldade,
-                     localTiroDic, local):
+# Mostra as todas as metricas relecionada ao causar dano
+def metricas_sistema_receber_dano(sist_causar_dano, localTiroDic, resultado, resultado_final, acertos):
+    col1, col2, col3 = sist_causar_dano.columns(3)
+    col1.metric("Resultado Dados", value=resultado)
+    col2.metric("Resultado Completo", value=resultado_final)
+    col3.metric("Tiros Acertados", value=acertos)
+
+    # Mostra todos os locais do corpo e seus repectivos danos recebido
+    sist_causar_dano.write("Dano direciona as partes do corpo")
+    for i, col in enumerate(sist_causar_dano.columns(len(locais_corpo()))):
+        lc = locais_corpo()[i]
+        col.metric(lc, localTiroDic[lc])
+
+
+def rolagem_dado_causar_dano(npc,confiabilidade_armar, buff_mira,debuff_mira):
+    resultado, falha = rolagem_dados_criticos(npc, confiabilidade_armar)
+    return resultado + int(npc.REF) + int(npc.pericia_arma) + buff_mira - debuff_mira , resultado
+
+def sistema_tiros(npc, quantidade_tiros, resultado, resultado_final, sist_causar_dano, valor_dificuldade,
+                  localTiroDic, local):
     boleano_local_especifico = False
     acertos = 0
 
