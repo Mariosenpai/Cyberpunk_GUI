@@ -2,10 +2,51 @@ from random import randint as random
 from math import ceil
 import os
 import streamlit as st
+import pickle
 
 
 def locais_corpo():
     return ["Cabeça", "Torso", "Braço direito", "Braço esquerdo", "Perna direita", "Perna esquerda"]
+
+
+def atributos():
+    return ['inteligencia', 'reflexo', 'tecnologia', 'auto controle', 'atratividade', 'sorte', 'movimento',
+            'tipo corporal', 'empatia']
+
+
+def classes():
+    return ["solo", "midia", "nomade", "trilha rede", "corporativo", "medicanico", "atravessador"]
+
+
+def tipos_arma():
+    return ["automatica", "submetralhadora", "fuzil", "espingarda" ,"Arma pesada", "exotica", "arma branca", "maos vazia"]
+
+
+# dicionario de todos os membros do corpo e seu dano causada a cada um deles
+def dic_local_tiros():
+    return {'Cabeça': 0, 'Torso': 0, 'Braço direito': 0, 'Braço esquerdo': 0, 'Perna direita': 0,
+                    'Perna esquerda': 0, }
+
+def dic_tipo_corporal_dano():
+    return {'Muito Fraco': -2, 'Fraco': -1, 'Medio': 0, 'Forte': 1, 'Muito Forte': 2 }
+
+def criar_personagem(npc, local_tela):
+    with open(f'dados/NPC_{npc.nome}.pickle', 'wb') as arquivo:
+        pickle.dump(npc, arquivo)
+    arquivo.close()
+
+    local_tela.success("NPC criado com sucesso!")
+
+def preencher_automaticamente_pericias(pericia_escolhida):
+    valor_max = 0
+    # preencher os 40 ponto de forma aleatoria ate chega a 40 pontos
+    while valor_max == 40:
+        for pericia in pericia_escolhida:
+            if random(0, 1) == 1:
+                pericia_escolhida[pericia] += 1
+                valor_max += 1
+
+    return pericia_escolhida
 
 def pegaDificuldade(dificuldade):
     if dificuldade == 1:
@@ -41,7 +82,7 @@ def acertoResultado(npc, acertos, localTiroDic):
     for i in range(1, acertos + 1):
         # O local é aleatorio quando voce não especifica o mesmo
         local = local_corpo_aleatorio()
-        localTiroDic = adiciona_dano_ao_local(npc,localTiroDic, local)
+        localTiroDic = adiciona_dano_ao_local(npc, localTiroDic, local)
     # Qualquer dano na cabeca é dobrado
     localTiroDic['Cabeça'] *= 2
     return localTiroDic
@@ -129,7 +170,7 @@ def tipos_falha_criticas(npc):
 
 
 def rolagem_dados_criticos(npc, automatica):
-    resultado_dado = random(1,10)
+    resultado_dado = random(1, 10)
     falha = False
 
     st.text(f"log:\nResultado do dado = {resultado_dado}")
@@ -146,10 +187,7 @@ def rolagem_dados_criticos(npc, automatica):
         else:
             falha = tipos_falha_criticas(npc)
 
-
     return resultado_dado, falha
-
-
 
 
 def pegaCaminhoArquivos(pasta_principal):

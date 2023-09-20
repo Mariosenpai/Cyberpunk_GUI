@@ -1,8 +1,8 @@
-import streamlit as st
 import pickle
-import classe_npc
-from service import pegaCaminhoArquivos
+from classes import classe_npc
 from .st_main import *
+from service.service import *
+from view.ficha import *
 
 
 def criacao_npc(valor_de_subtracao, dado_de_dano, dado_de_mult, confiabilidade_armar):
@@ -31,11 +31,7 @@ def criacao_npc(valor_de_subtracao, dado_de_dano, dado_de_mult, confiabilidade_a
                              confiabilidade_selecionada, dado_dano)
 
         # salva npc em um arquivo
-        with open(f'dados/NPC_{npc.nome}.pickle', 'wb') as arquivo:
-            pickle.dump(npc, arquivo)
-        arquivo.close()
-
-        side.success("NPC criado com sucesso!")
+        criar_personagem(npc, side)
 
     # Criar um novo npc
 
@@ -50,7 +46,13 @@ def buscar_npc():
 
     npc_escolhido = st.sidebar.selectbox("Busca npcs salvos", lista_npcs)
     # for npc_escolhido in lista_npcs:
+    if len(lista_npcs) == 0:
+        return st.text('Sem personagem cadastrado')
+
     npc_escolhido = lista_npcs[npc_escolhido]
-    ficha_npc(npc_escolhido)
+    if npc_escolhido.get_personagem_descartavel:
+        ficha_personagem_descartavel(npc_escolhido)
+    else:
+        ficha_npc(npc_escolhido)
 
     return npc_escolhido
