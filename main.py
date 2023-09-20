@@ -18,6 +18,9 @@ dificudades = {"Queima roupa - 10": 10, "Curta distancia - 15": 15,
 
 st.title("Cyberpunk")
 
+
+
+
 # SIDEBAR
 #criacao_npc(valor_de_subtracao, dado_de_dano, dado_de_mult, confiabilidade_armar)
 criar_personagens_descataveis()

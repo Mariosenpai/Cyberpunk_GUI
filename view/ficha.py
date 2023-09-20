@@ -2,6 +2,7 @@ import streamlit as st
 from service.service import *
 from service.pericias import pericias_classe
 from classes.personagens_descartaveis import *
+from service.listas_e_dic import *
 
 
 def ficha_npc(npc_escolhido):
@@ -35,12 +36,11 @@ def ficha_personagem_descartavel(npc_escolhido):
 def criar_personagens_descataveis():
     pd = st.sidebar.expander("Personagens Descartaveis")
 
-
     nome = pd.text_input("Nome")
     classe = pd.selectbox("Classes", classes())
     npc = personagem_descatavel(nome=nome,classe=classe)
     pd.caption("Armas e cyberware seram gerados automaticamente de acordo com a regra do jogo")
-    pericias(pd, npc)
+    pericias(pd, npc,classe)
 
     # pd.text("Atributos gerados automaticamente")
     # for i, col in enumerate(pd.columns(len(atributos()))):
@@ -48,14 +48,12 @@ def criar_personagens_descataveis():
     #     col.metric(valor_atr, atributos_personagem[valor_atr])
 
 
-def pericias(pd, npc):
-    #classe padrao
-    classe = 'solo'
+def pericias(pd, npc, classe):
     valor_max_pericias = 40
     valor_pericas = 0
 
-    pd.subheader(f"Pericias da classe {classe}")
     pericia_escolhida = pericias_classe(classe)
+    pd.subheader(f"Pericias da classe {classe}")
 
     if pd.toggle("Preencher pericias automaticamente", True):
         pericia_escolhida = preencher_automaticamente_pericias(pericia_escolhida)
@@ -74,4 +72,10 @@ def pericias(pd, npc):
 def botao_criar_personagem(local,npc,pericia_escolhida):
     if local.button("Criar personagem"):
         npc.add_pericias(pericia_escolhida)
+        # definir os itens/armas e cyberware do npc
+
+        # ciberopticos
+        #for co in lista_armas_brancas():
+
+
         criar_personagem(npc, st)

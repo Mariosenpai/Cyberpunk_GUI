@@ -1,5 +1,5 @@
 from .service import *
-
+from .listas_e_dic import *
 
 def sistema_arma_branco():
     pass

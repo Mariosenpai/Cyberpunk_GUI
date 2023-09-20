@@ -38,9 +38,10 @@ def criacao_npc(valor_de_subtracao, dado_de_dano, dado_de_mult, confiabilidade_a
 
 def buscar_npc():
     lista_npcs = {}
-    caminho_dic = pegaCaminhoArquivos("dados")
+    caminho_dic = pegaCaminhoArquivos("dados/npcs")
     for npc_salvo in caminho_dic:
-        with open(f"dados/{npc_salvo}", 'rb') as arquivo_aberto:
+
+        with open(f"dados/npcs/{npc_salvo}", 'rb') as arquivo_aberto:
             npc = pickle.load(arquivo_aberto)
             lista_npcs[npc.nome] = npc
 
