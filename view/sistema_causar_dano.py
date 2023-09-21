@@ -16,25 +16,38 @@ def metricas_sistema_receber_dano(sist_causar_dano, localTiroDic, resultado, res
         col.metric(lc, localTiroDic[lc])
 
 
-def selecione_informacoes_causar_dano(dificudades, sist_causar_dano):
+def selecione_informacoes_causar_dano(npc, sist_causar_dano):
     sist_causar_dano.subheader("Sistema de dano")
-    sist_causar_dano.write("Ações do seu turno. Aqui iremos foca na ações relacionadas a ação de atirar")
+    sist_causar_dano.write("Ações que seu personagem pode fazer.")
 
-    tipo_arma = sist_causar_dano.selectbox("Tipo arma", tipos_arma())
+    # transforma a lista de arma em um dicinario onde a chave é o nome e o valor o objeto
+    dic_arma = {}
+    for a in npc.get_arma():
+        dic_arma[a.get_nome()] = a
+
+    # O selectbox irar retorna apenas a chave do dicionario
+    arma_nome = sist_causar_dano.selectbox("Escolher Arma", dic_arma)
+    # seleciona o objeto atraves da chave dada pelo selectbox e pego seu tipo
+    tipo_arma = dic_arma[arma_nome].get_tipo()
+
+    arma = dic_arma[arma_nome]
+
+    sist_causar_dano.caption(f"Tipo {tipo_arma}")
 
     espingarda = tipos_arma()[3]
     arma_branca = tipos_arma()[6]
     maos_vazia = tipos_arma()[7]
 
-    # Dependendo do tipo de arma ela tera uma laucher especifico
-    if tipo_arma == arma_branca:
-        return 0
     # Se ela não for uma arma branca espingarda e de maos vazia
-    elif not (tipo_arma in [arma_branca, espingarda, maos_vazia]):
-        return 1
+    if not (tipo_arma in [arma_branca, espingarda, maos_vazia]):
+        return 0 , arma
+    # Dependendo do tipo de arma ela tera uma laucher especifico
     elif tipo_arma == espingarda:
-        return 2
+        return 1 , arma
+    elif tipo_arma == maos_vazia:
+        return 2 ,arma
+    # Arma branca
     else:
-        return 3
+        return 3 , arma
 
     # arma_automatica = sist_causar_dano.toggle("Arma automatica")

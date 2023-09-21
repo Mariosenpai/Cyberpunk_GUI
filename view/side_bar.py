@@ -35,25 +35,3 @@ def criacao_npc(valor_de_subtracao, dado_de_dano, dado_de_mult, confiabilidade_a
 
     # Criar um novo npc
 
-
-def buscar_npc():
-    lista_npcs = {}
-    caminho_dic = pegaCaminhoArquivos("dados/npcs")
-    for npc_salvo in caminho_dic:
-
-        with open(f"dados/npcs/{npc_salvo}", 'rb') as arquivo_aberto:
-            npc = pickle.load(arquivo_aberto)
-            lista_npcs[npc.nome] = npc
-
-    npc_escolhido = st.sidebar.selectbox("Busca npcs salvos", lista_npcs)
-    # for npc_escolhido in lista_npcs:
-    if len(lista_npcs) == 0:
-        return st.text('Sem personagem cadastrado')
-
-    npc_escolhido = lista_npcs[npc_escolhido]
-    if npc_escolhido.get_personagem_descartavel:
-        ficha_personagem_descartavel(npc_escolhido)
-    else:
-        ficha_npc(npc_escolhido)
-
-    return npc_escolhido

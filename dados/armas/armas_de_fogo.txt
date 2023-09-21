@@ -1,0 +1,13 @@
+BudgetArms C-13,-1,1d6,8,2,50,Pistola
+Dai Lung Cibermag 15,-1,1d6+1,10,2,50,Pistola
+Federated Arms X-22,0,1d6+1,10,2,50,Pistola
+Militech Arms Avenger,0,2d6+1,10,2,50,Pistola
+Dai Lung Street Master,0,2d6+3,12,2,50,Pistola
+Federated Arms X-9mm,0,2d6+1,12,2,50,Pistola
+Buget Arms Auto 3,-1,3d6,8,2,50,Pistola
+Sternmeyer Type 35,0,3d6,8,2,50,Pistola
+Uzi Miniauto 9,+1,2d6+1,30,35,150,Submetralhadora
+H&K MP-2013,+1,2d6+3,35,32,150,Submetralhadora
+Federated Arms Assalto Tenologico II,+1,1d6+1,50,150,Submetralhadora
+Arasaka Minami 10,0,2d6+3,40,20,200,Submetralhadora
+H&K MPK-9,+1,2d6+1,35,25,200,Submetralhadora

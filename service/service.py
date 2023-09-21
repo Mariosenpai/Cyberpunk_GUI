@@ -8,16 +8,16 @@ from .listas_e_dic import locais_corpo
 
 
 def criar_personagem(npc, local_tela):
-    with open(f'dados/NPC_{npc.nome}.pickle', 'wb') as arquivo:
+    with open(f'dados/npcs/NPC_{npc.nome}.pickle', 'wb') as arquivo:
         pickle.dump(npc, arquivo)
     arquivo.close()
 
     local_tela.success("NPC criado com sucesso!")
 
 def preencher_automaticamente_pericias(pericia_escolhida):
-    valor_max = 0
+    valor_max = 1
     # preencher os 40 ponto de forma aleatoria ate chega a 40 pontos
-    while valor_max == 40:
+    while valor_max <= 40:
         for pericia in pericia_escolhida:
             if random(0, 1) == 1:
                 pericia_escolhida[pericia] += 1
