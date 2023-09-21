@@ -1,0 +1,4 @@
+Infravermelho,1,Permite verna mais completa escurdidão
+Microvideo,1,Grava ate 20 minutos de video
+Pistola de Dardos,2,Sim uma pistola de dados no olho
+Teleopticos,1,Multiplica a habilidade telescopia em 20x

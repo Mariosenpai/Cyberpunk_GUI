@@ -30,3 +30,14 @@ def lista_armas_brancas():
     with open(f"dados/armas/armas_brancas.txt", 'r') as arquivo_aberto:
         return arquivo_aberto.read().split('\n')
 
+def lista_ciberware_opticos():
+    with open(f"dados/armas/cyberwares/cyberopticos.txt", 'r') as arquivo_aberto:
+        return arquivo_aberto.read().split('\n')
+
+def lista_ciberware_neurais():
+    with open(f"dados/armas/cyberwares/ciberneural.txt", 'r') as arquivo_aberto:
+        return arquivo_aberto.read().split('\n')
+
+def lista_ciberware_audio():
+    with open(f"dados/armas/cyberwares/ciberaudio.txt", 'r') as arquivo_aberto:
+        return arquivo_aberto.read().split('\n')

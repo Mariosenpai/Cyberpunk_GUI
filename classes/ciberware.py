@@ -1,5 +1,5 @@
 
-class cyberware:
+class ciberware:
 
     def __init__(self, nome, perda_empatia, descricao):
         self.nome = nome

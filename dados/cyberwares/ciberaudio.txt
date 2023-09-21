@@ -1,0 +1,4 @@
+Wearman,1,Sistema de musica estereo
+Audição Amplificada,1,1+ de atenção quando se ultiliza audição
+Conexão de radio,1,Comunicação de a radio de ate 1,5km
+Editor de som,1,+2 de atenção para entender conversas especificas

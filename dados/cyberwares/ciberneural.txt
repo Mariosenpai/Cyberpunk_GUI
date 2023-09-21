@@ -1,0 +1,4 @@
+Kerenzikov,20,Adiciona +1 turno automaticamente
+Sandevistan,20, Adiciona +1 turno depois de ativado
+Amplificador Tactil,2, Aumenta a sensibilidade, +2 em qualquer teste de atenção tactil
+Amplificador Olfativo,2, Aumenta a atenção em +2 atraves dos cheiros. Permite rastrear Mediante o odor

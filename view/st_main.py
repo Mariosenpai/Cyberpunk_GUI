@@ -15,7 +15,7 @@ def ficha_npc(npc_escolhido):
             f"Automatica: {npc_escolhido.confiabilidade}")
 
 
-def sistemas(npc, pericia_arma, dificuldades):
+def sistemas(npc, dificuldades):
     quantidade_tiros,buff_mira, debuff_mira= 0,0,0
     local = ''
 

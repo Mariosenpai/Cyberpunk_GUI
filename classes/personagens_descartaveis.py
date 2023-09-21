@@ -13,6 +13,9 @@ def atributo_aleatorio(limitador, limite):
 class personagem_descatavel:
     def __init__(self,classe, nome, inteligencia=2, reflexo=2, tecnologia=2, auto_controle=2, atratividade=2, sorte=2,
                  movimento=2, tipo_corporal=2, empatia=2, preencher_automatico=True, limitador=False, limite=11):
+        self.pericias = None
+        self.arma = None
+        self.cyberware = None
         self.nome = nome
         self.personagem_descatavel = True
         self.classe = classe
@@ -39,6 +42,18 @@ class personagem_descatavel:
             self.empatia = empatia
 
     # Funções getter para obter os valores dos atributos
+    def add_arma(self,arma):
+        self.arma = arma
+
+    def get_arma(self):
+        return self.arma
+
+    def add_cyberwares(self, cyberware):
+        self.cyberware = cyberware
+
+    def get_cyberware(self):
+        return self.cyberware
+
     def modificador_tipo_corporal(self):
         if self.tipo_corporal == 2:
             return 'Muito Fraco'

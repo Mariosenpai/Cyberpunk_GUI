@@ -2,7 +2,6 @@ from service.service import *
 from service.sistema_dano import *
 
 
-
 # Mostra as todas as metricas relecionada ao causar dano
 def metricas_sistema_receber_dano(sist_causar_dano, localTiroDic, resultado, resultado_final, acertos):
     col1, col2, col3 = sist_causar_dano.columns(3)
@@ -17,11 +16,7 @@ def metricas_sistema_receber_dano(sist_causar_dano, localTiroDic, resultado, res
         col.metric(lc, localTiroDic[lc])
 
 
-
-
 def selecione_informacoes_causar_dano(dificudades, sist_causar_dano):
-
-
     sist_causar_dano.subheader("Sistema de dano")
     sist_causar_dano.write("Ações do seu turno. Aqui iremos foca na ações relacionadas a ação de atirar")
 
@@ -41,7 +36,5 @@ def selecione_informacoes_causar_dano(dificudades, sist_causar_dano):
         return 2
     else:
         return 3
-
-
 
     # arma_automatica = sist_causar_dano.toggle("Arma automatica")
