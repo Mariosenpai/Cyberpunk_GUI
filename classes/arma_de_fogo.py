@@ -10,6 +10,8 @@ class arma_de_fogo:
         self.PA = PA
         self.descricao = descricao
 
+    def get_PA(self):
+        return self.PA
     def get_quantidade_balas(self):
         return self.quantidade_balas
 

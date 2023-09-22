@@ -6,13 +6,13 @@ import pickle
 from .listas_e_dic import locais_corpo
 
 
-
 def criar_personagem(npc, local_tela):
     with open(f'dados/npcs/NPC_{npc.nome}.pickle', 'wb') as arquivo:
         pickle.dump(npc, arquivo)
     arquivo.close()
 
     local_tela.success("NPC criado com sucesso!")
+
 
 def preencher_automaticamente_pericias(pericia_escolhida):
     valor_max = 1
@@ -24,6 +24,7 @@ def preencher_automaticamente_pericias(pericia_escolhida):
                 valor_max += 1
 
     return pericia_escolhida
+
 
 def pegaDificuldade(dificuldade):
     if dificuldade == 1:
@@ -55,38 +56,55 @@ def local_corpo_aleatorio():
         return locais_corpo()[5]
 
 
-def acertoResultado(npc, acertos, localTiroDic):
+def acertoResultado(arma, acertos, localTiroDic):
     for i in range(1, acertos + 1):
         # O local é aleatorio quando voce não especifica o mesmo
         local = local_corpo_aleatorio()
-        localTiroDic = adiciona_dano_ao_local(npc, localTiroDic, local)
+        localTiroDic = adiciona_dano_ao_local(arma, localTiroDic, local)
     # Qualquer dano na cabeca é dobrado
     localTiroDic['Cabeça'] *= 2
     return localTiroDic
 
 
-def acertoResultadoLocalEspecifico(npc, acertos, localTiroDic, local):
+def acertoResultadoLocalEspecifico(arma, acertos, localTiroDic, local):
     for i in range(1, acertos + 1):
-        localTiroDic = adiciona_dano_ao_local(npc, localTiroDic, local)
+        localTiroDic = adiciona_dano_ao_local(arma, localTiroDic, local)
 
     # Qualquer dano na cabeca é dobrado
     localTiroDic['Cabeça'] *= 2
     return localTiroDic
 
 
-def calcula_dano(npc):
+def calcula_dano(arma):
     dano = 0
-    for i in range(npc.dado_de_mult):
-        dano += random(1, npc.dado_de_dano)
 
-    if (dano - npc.valor_de_subtracao) <= 0:
-        return 1
-    else:
-        return dano - npc.valor_de_subtracao
+    dado_de_mult = int(arma.dado_dano[0])
+    dado_de_dano = int(arma.dado_dano[2])
+
+    for i in range(dado_de_mult):
+        dano += random(1, dado_de_dano)
+
+    # Se ocorrer uma exceção é pq o não existe uma outro operaçãço de adição ou subtração assim retornando o dano
+    try:
+        operacao = int(arma.dado_dano[3])
+    except:
+        return dano
+
+    # Verifica se tem mais uma operação
+    valor = int(arma.dado_dano[4])
+    # Subtração
+    if operacao == '-':
+        if (dano - valor) <= 0:
+            return 1
+        else:
+            return dano - valor
+    # Adição
+    if operacao == '+':
+        return dano + valor
 
 
-def adiciona_dano_ao_local(npc, localTiroDic, local):
-    dano = calcula_dano(npc)
+def adiciona_dano_ao_local(arma, localTiroDic, local):
+    dano = calcula_dano(arma)
     if local in localTiroDic:
         localTiroDic[local] += dano
     else:
@@ -100,11 +118,11 @@ def escolhe_local(id_local):
     return local[id_local - 1]
 
 
-def resultado_tiros_acertados(npc, acertos, localTiroDic, boleano_local_especifico=False, local=''):
+def resultado_tiros_acertados(arma, acertos, localTiroDic, boleano_local_especifico=False, local=''):
     if not boleano_local_especifico:
-        return acertoResultado(npc, acertos, localTiroDic)
+        return acertoResultado(arma, acertos, localTiroDic)
     else:
-        return acertoResultadoLocalEspecifico(npc, acertos, localTiroDic, local)
+        return acertoResultadoLocalEspecifico(arma, acertos, localTiroDic, local)
 
 
 def armar_falhou(confiabilidade):
@@ -121,7 +139,7 @@ def armar_falhou(confiabilidade):
         return True
 
 
-def tipos_falha_criticas(npc):
+def tipos_falha_criticas(arma):
     tipo_falha_critica = random(1, 10)
 
     if tipo_falha_critica <= 4:
@@ -138,7 +156,7 @@ def tipos_falha_criticas(npc):
         return True
     elif tipo_falha_critica == 8:
         st.text(f"Voce se atira na/o {local_corpo_aleatorio()}")
-        st.text(f"Levou {calcula_dano(npc)} de dano no local")
+        st.text(f"Levou {calcula_dano(arma)} de dano no local")
         return True
     elif tipo_falha_critica >= 9:
         st.text("Voce atinge um membro do grupo")
