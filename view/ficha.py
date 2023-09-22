@@ -78,6 +78,7 @@ def adiciona_arma(npc):
     else:
         item_ar = seleciona_aleatoriamente_arma(lista_armas_de_fogo(), 'af')
 
+    print("arma a ser adicionada ", item_ar)
     # Adiciona a arma obs: so pode ter uma arma
     # Salvando como uma lista
     npc.add_arma([item_ar])
@@ -129,10 +130,13 @@ def seleciona_aleatoriamente_arma(lista_armas, tipo='af'):
     for a in lista_armas:
         lista_a.append(a.split(','))
 
-    if tipo == 'aa':
-        return criar_arma_branca(lista_a[random(0, len(lista_a) - 1)])
+    arma_selecionada = lista_a[random(0, len(lista_a) - 1)]
+    print("arma = ",arma_selecionada)
+
+    if tipo == 'ab':
+        return criar_arma_branca(arma_selecionada)
     elif tipo == 'af':
-        return criar_arma_de_fogo(lista_a[random(0, len(lista_a) - 1)])
+        return criar_arma_de_fogo(arma_selecionada)
 
 
 # Armas
@@ -142,7 +146,7 @@ def criar_arma_de_fogo(item_arma):
 
 
 def criar_arma_branca(item_arma):
-    return arma_branca(item_arma[0], int(item_arma[1]), item_arma[2])
+    return arma_branca(item_arma[0], int(item_arma[1]), item_arma[2], item_arma[3], "Arma Branca")
 
 
 # Armas

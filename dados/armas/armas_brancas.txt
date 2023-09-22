@@ -5,6 +5,6 @@ Machado,-1,2d6+3,Um machado de lenhador
 Nuchaku/Tonfa,0,3d6,Uma arma tipo a do michelangelo(Laranja)
 Naginata,0,3d6,Um naginata consiste em um pólo de madeira ou metal com uma lâmina curvada de um único fio no final; É semelhante ao chinês guan dao  ou ao glaive europeu .
 Navalha,0,1d6/2,A mesma q usa para fazer a barba
-Soco Ingles,1d6+2, Soco ingles
+Soco Ingles,0,1d6+2, Soco ingles
 Marreta,-1,4d6,Olha a marretaaaaaaaa!!
 Motoserra,-3,4d6,Vai doer

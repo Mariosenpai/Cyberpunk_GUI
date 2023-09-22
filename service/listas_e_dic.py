@@ -12,7 +12,7 @@ def classes():
 
 
 def tipos_arma():
-    return ["Pistola", "Submetralhadora", "Fuzil", "Espingarda", "Arma pesada", "Exotica", "Arma branca",
+    return ["Pistola", "Submetralhadora", "Fuzil", "Espingarda", "Arma pesada", "Exotica", "Arma Branca",
             "Maos vazia"]
 
 

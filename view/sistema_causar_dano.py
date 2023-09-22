@@ -40,14 +40,14 @@ def selecione_informacoes_causar_dano(npc, sist_causar_dano):
 
     # Se ela não for uma arma branca espingarda e de maos vazia
     if not (tipo_arma in [arma_branca, espingarda, maos_vazia]):
-        return 0 , arma
+        return 0, arma
     # Dependendo do tipo de arma ela tera uma laucher especifico
     elif tipo_arma == espingarda:
-        return 1 , arma
+        return 1, arma
     elif tipo_arma == maos_vazia:
-        return 2 ,arma
+        return 2, arma
     # Arma branca
     else:
-        return 3 , arma
+        return 3, arma
 
     # arma_automatica = sist_causar_dano.toggle("Arma automatica")

@@ -24,3 +24,4 @@ criar_personagens_descataveis()
 npc = buscar_npc()
 
 sistemas(npc , dificudades)
+

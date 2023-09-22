@@ -80,7 +80,7 @@ def sistemas(npc, dificuldades):
     sist_causar_dano, sist_receber_dano = st.tabs(["Sistema de dano", "Sistema de receber dano"])
 
     # Causar dano
-    tipo , arma = selecione_informacoes_causar_dano(npc, sist_causar_dano)
+    tipo, arma = selecione_informacoes_causar_dano(npc, sist_causar_dano)
 
     # tipo - 0 = arma de fogo
     # tipo - 1 = espingarda
