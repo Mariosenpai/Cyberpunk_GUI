@@ -81,7 +81,7 @@ def adiciona_arma(npc):
     print("arma a ser adicionada ", item_ar)
     # Adiciona a arma obs: so pode ter uma arma
     # Salvando como uma lista
-    npc.add_arma([item_ar])
+    npc.add_arma(item_ar)
 
     return npc
 

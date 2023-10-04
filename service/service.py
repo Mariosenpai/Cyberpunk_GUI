@@ -13,6 +13,10 @@ def criar_personagem(npc, local_tela):
 
     local_tela.success("NPC criado com sucesso!")
 
+def atualizar_personagem(npc):
+    with open(f'dados/npcs/NPC_{npc.nome}.pickle', 'wb') as arquivo:
+        pickle.dump(npc, arquivo)
+    arquivo.close()
 
 def preencher_automaticamente_pericias(pericia_escolhida):
     valor_max = 1

@@ -46,8 +46,11 @@ def ficha_personagem_descartavel(npc_escolhido):
     st.write(f"Nome : {npc_escolhido.get_nome()}")
     st.write(f"Classe : {npc_escolhido.get_classe()}")
 
-    st.divider()
+    print(npc_escolhido.get_arma())
+    lista_armas = [arma.get_nome() for arma in npc_escolhido.get_arma() if arma != []]
 
+    st.divider()
+    # INFORMAÇÕES PERSONAGEM
     col1, col2, col3 = st.expander("Informações Personagem").columns(3)
 
     dict_d = {
@@ -76,10 +79,67 @@ def ficha_personagem_descartavel(npc_escolhido):
     col3.subheader("Itens")
     col3.table(df)
 
-    df = pd.DataFrame.from_dict({'Arma': [arma.get_nome() for arma in npc_escolhido.get_arma() if arma != []]})
+    df = pd.DataFrame.from_dict({'Arma': lista_armas})
     col3.table(df)
+    # INFORMAÇÕES PERSONAGEM
+
+    # INFORMAÇÕES ITENS
+    col1 = st.expander("Informações Itens")
+
+    dict_d = {
+        "Ciberwares": [ciberware.get_nome() for ciberware in npc_escolhido.get_cyberware() if ciberware != []],
+        "Descrição": [ciberware.get_descricao() for ciberware in npc_escolhido.get_cyberware() if ciberware != []],
+    }
+    df = pd.DataFrame.from_dict(dict_d)
+    col1.subheader("Ciberwares")
+    col1.table(df)
+
+    dict_d = {
+        'Arma': lista_armas,
+        'Descrição': [arma.get_descricao() for arma in npc_escolhido.get_arma() if arma != []],
+    }
+    df = pd.DataFrame.from_dict(dict_d)
+    col1.subheader("Armas")
+    col1.table(df)
+    # INFORMAÇÕES ITENS
 
     st.divider()
+
+    add_remo = st.expander("Adiciona ou Remover Itens")
+
+    remover = "***Remover***"
+    adicionar = ":rainbow[Adicionar]"
+    arma_escolhida = ''
+
+    acao = add_remo.radio(
+        "Qual ação deseja efetuar",
+        [adicionar, remover],
+        captions=["Adiciona um item da lista a sua escolha.", "Remover um item do inventario."])
+
+    #add_remo.warning("Selecione uma ação")
+    ciberwares = [lista_ciberware_neurais(), lista_ciberware_audio(), lista_ciberware_opticos()]
+    arma_de_fogo_escolhida = ''
+    ciberware = ''
+    if acao == remover:
+        arma_de_fogo_escolhida = add_remo.selectbox('Lista Armas', ['Nenhum']+lista_armas)
+        add_remo.caption(f"Arma selecionada {arma_escolhida}")
+        cb = ['Nenhum'] + [c.get_nome() for c in npc_escolhido.get_cyberware() if c != []]
+        ciberware = add_remo.selectbox('Lista Ciberware', cb)
+
+    if acao == adicionar:
+        # TODO faz pega apenas o nome do item
+        arma_de_fogo_escolhida = add_remo.selectbox('Lista Armas de Fogo', lista_armas_de_fogo())
+        arma_branca_escolhida = add_remo.selectbox('Lista Armas Brancas',  lista_armas_brancas())
+        ciberware = add_remo.selectbox('Lista Ciberware',ciberwares )
+
+
+    if add_remo.button("Salvar"):
+        if acao == remover:
+            if npc_escolhido.remover_arma(arma_de_fogo_escolhida) or npc_escolhido.remover_ciberware(ciberware):
+                atualizar_personagem(npc_escolhido)
+                add_remo.success(f"Itens removidos")
+        else:
+            print("Adicionar")
 
 
 def sistemas(npc, dificuldades):
@@ -116,7 +176,8 @@ def sistemas(npc, dificuldades):
         # rola os dados
         # botao_rolar_dados(sist_causar_dano, npc, pericia_arma, dificuldades, dificuldade, local,
         #                   buff_mira, debuff_mira, quantidade_tiros=quantidade_tiros)
-
+    elif tipo == 2:
+        sist_causar_dano.text("Sem nada ainda...")
 
     # Dano com armas brancas
     elif tipo == 3:

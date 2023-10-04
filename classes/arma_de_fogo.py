@@ -26,3 +26,6 @@ class arma_de_fogo:
 
     def get_tiros_por_turno(self):
         return self.tiros_por_turno
+
+    def get_descricao(self):
+        return self.descricao

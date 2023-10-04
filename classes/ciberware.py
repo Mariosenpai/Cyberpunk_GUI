@@ -8,3 +8,6 @@ class ciberware:
 
     def get_nome(self):
         return self.nome
+
+    def get_descricao(self):
+        return self.descricao

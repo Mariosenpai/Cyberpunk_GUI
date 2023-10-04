@@ -16,6 +16,7 @@ class personagem_descatavel:
         self.nome = nome
         self.personagem_descatavel = True
         self.classe = classe
+        self.arma = []
 
         if preencher_automatico:
             self.inteligencia = atributo_aleatorio(limitador, limite)
@@ -39,8 +40,28 @@ class personagem_descatavel:
             self.empatia = empatia
 
     # Funções getter para obter os valores dos atributos
+
+    def remover_arma(self, nome_arma):
+        if nome_arma == 'Nenhum':
+            return False
+        for i,a in enumerate(self.arma):
+            if a.get_nome() == nome_arma:
+                self.arma.remove(a)
+                return True
+            else:
+                return False
+
+    def remover_ciberware(self, nome_ciberware):
+        print('ah pora' ,self.cyberware)
+        for i,c in enumerate(self.cyberware):
+            if c.get_nome() == nome_ciberware:
+                self.cyberware.remove(c)
+                return True
+            else:
+                return False
+
     def add_arma(self,arma):
-        self.arma = arma
+        self.arma.append(arma)
 
     def get_arma(self):
         return self.arma

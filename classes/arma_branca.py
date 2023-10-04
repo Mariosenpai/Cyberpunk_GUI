@@ -12,3 +12,6 @@ class arma_branca():
 
     def get_tipo(self):
         return self.tipo
+
+    def get_descricao(self):
+        return self.descricao
