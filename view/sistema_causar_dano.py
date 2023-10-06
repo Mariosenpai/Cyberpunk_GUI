@@ -26,12 +26,12 @@ def selecione_informacoes_causar_dano(npc, sist_causar_dano):
     sem_arma = False
     maos_vazia = tipos_arma()[7]
     for a in npc.get_arma():
-        # TODO esta ocorrendo um erro aq
-        if a != []:
+        if a:
             dic_arma[a.get_nome()] = a
-        else:
-            sem_arma = True
-            dic_arma[maos_vazia] = arma_branca(maos_vazia, 0, '1d6', 'Voce esta de maos vazia', maos_vazia)
+
+    if npc.get_arma() == []:
+        sem_arma = True
+        dic_arma[maos_vazia] = arma_branca(maos_vazia, 0, '1d6', 'Voce esta de maos vazia', maos_vazia)
 
     # O selectbox irar retorna apenas a chave do dicionario
     arma_nome = sist_causar_dano.selectbox("Escolher Arma", dic_arma)
